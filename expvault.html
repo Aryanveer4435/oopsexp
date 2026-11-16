@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpVault - Public Experiments & OOPs Repository</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accent: '#6366f1',
+                        accentHover: '#4f46e5'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-slate-800 bg-cardBg/50 backdrop-blur sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-flask-vial text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
+                        ExpVault <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 font-medium">Public Experiments</span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div id="authContainer" class="flex items-center gap-3">
+                    <span id="userBadge" class="hidden text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700"></span>
+                    <button id="authBtn" onclick="handleAuthAction()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-slate-700 cursor-pointer">
+                        <i class="fa-brands fa-google text-indigo-400"></i>
+                        <span id="authBtnText">Admin Sign In</span>
+                    </button>
+                </div>
+                <button id="newExpBtn" onclick="openModal()" class="hidden flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-indigo-600/20 cursor-pointer">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>New Experiment</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+        
+        <!-- Search and Filter Section -->
+        <section class="flex flex-col md:flex-row gap-4 items-center justify-between bg-cardBg p-4 rounded-2xl border border-slate-800 shadow-xl">
+            <div class="relative w-full md:w-96">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="searchInput" oninput="filterExperiments()" placeholder="Search experiments by title or code..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <!-- Category Pills Filter -->
+            <div id="categoryFilters" class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+                <button onclick="filterByCategory('All')" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-indigo-600 text-white transition cursor-pointer" data-category="All">All Categories</button>
+                <button onclick="filterByCategory('OOPs')" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer" data-category="OOPs">OOPs</button>
+                <button onclick="filterByCategory('Java')" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer" data-category="Java">Java</button>
+                <button onclick="filterByCategory('Python')" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer" data-category="Python">Python</button>
+                <button onclick="filterByCategory('Algorithms')" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer" data-category="Algorithms">Algorithms</button>
+            </div>
+        </section>
+
+        <!-- Experiments Grid -->
+        <section>
+            <div id="experimentsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Injected via Firebase / JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center text-slate-500 text-2xl mb-4">
+                    <i class="fa-solid fa-flask"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-300">No experiments found</h3>
+                <p class="text-sm text-slate-500 mt-1 max-w-sm">No experiments published yet or matches your query.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500 bg-cardBg/30">
+        <p>ExpVault &bull; Public Experiments Cloud Repository (Viewable by All, Editable only by Owner)</p>
+    </footer>
+
+    <!-- Add/Edit Modal Form -->
+    <div id="expModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                <h3 id="modalTitle" class="font-bold text-base text-white flex items-center gap-2">
+                    <i class="fa-solid fa-flask-vial text-indigo-400"></i> Add New Experiment
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="expForm" onsubmit="handleFormSubmit(event)" class="p-6 overflow-y-auto space-y-4 flex-grow">
+                <input type="hidden" id="expId">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Experiment Title *</label>
+                        <input type="text" id="titleInput" required placeholder="e.g., Polymorphism Benchmarking" 
+                            class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Category *</label>
+                        <select id="categoryInput" required 
+                            class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                            <option value="OOPs">OOPs</option>
+                            <option value="Java">Java</option>
+                            <option value="Python">Python</option>
+                            <option value="Algorithms">Algorithms</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Description / Hypothesis</label>
+                    <input type="text" id="descInput" placeholder="Brief summary of what this experiment tests..." 
+                        class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/60 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Code Block *</label>
+                    <textarea id="codeInput" required rows="8" placeholder="Paste your experiment source code here..." 
+                        class="w-full p-4 bg-slate-950 font-mono text-xs border border-slate-700/60 rounded-xl text-indigo-200 focus:outline-none focus:border-indigo-500 resize-y"></textarea>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Display Output / Result</label>
+                    <textarea id="outputInput" rows="4" placeholder="Paste console output or expected result here..." 
+                        class="w-full p-4 bg-slate-950 font-mono text-xs border border-slate-700/60 rounded-xl text-emerald-300 focus:outline-none focus:border-indigo-500 resize-y"></textarea>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex items-center justify-end space-x-3">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-600/30 cursor-pointer">Publish Experiment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-semibold border border-emerald-500">
+            <i class="fa-solid fa-circle-check text-lg"></i>
+            <span id="toastMessage">Success!</span>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Imports & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously, signInWithCustomToken, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'expvault-default-app';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let experiments = [];
+        let currentCategory = 'All';
+
+        window.onload = async function() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth init error:", err);
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                updateAuthUI();
+                fetchExperiments();
+            });
+        };
+
+        function updateAuthUI() {
+            const badge = document.getElementById('userBadge');
+            const authBtnText = document.getElementById('authBtnText');
+            const newExpBtn = document.getElementById('newExpBtn');
+
+            if (currentUser && !currentUser.isAnonymous) {
+                badge.innerText = currentUser.email || currentUser.displayName || "Admin Signed In";
+                badge.classList.remove('hidden');
+                authBtnText.innerText = "Sign Out";
+                newExpBtn.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                authBtnText.innerText = "Admin Sign In";
+                newExpBtn.classList.add('hidden');
+            }
+        }
+
+        window.handleAuthAction = async function() {
+            if (currentUser && !currentUser.isAnonymous) {
+                await signOut(auth);
+                showToast("Signed out successfully.");
+            } else {
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider);
+                    showToast("Admin access authenticated!");
+                } catch (err) {
+                    showToast("Authentication failed: " + err.message, true);
+                }
+            }
+        }
+
+        function fetchExperiments() {
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'experiments');
+            onSnapshot(colRef, (snapshot) => {
+                experiments = [];
+                snapshot.forEach(docSnap => {
+                    experiments.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderExperiments();
+            }, (error) => {
+                console.error("Firestore read error:", error);
+            });
+        }
+
+        window.renderExperiments = function() {
+            const container = document.getElementById('experimentsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = experiments.filter(item => {
+                const matchesCat = currentCategory === 'All' || item.category === currentCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || 
+                                      (item.description && item.description.toLowerCase().includes(searchQuery)) ||
+                                      item.code.toLowerCase().includes(searchQuery) ||
+                                      (item.output && item.output.toLowerCase().includes(searchQuery));
+                return matchesCat && matchesSearch;
+            });
+
+            container.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            const isOwner = currentUser && !currentUser.isAnonymous;
+
+            filtered.forEach(exp => {
+                const card = document.createElement('div');
+                card.className = "bg-cardBg border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-slate-700 transition group";
+                
+                card.innerHTML = `
+                    <div class="p-5 flex flex-col gap-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-2 inline-block">${exp.category}</span>
+                                <h3 class="font-bold text-base text-white tracking-tight">${escapeHtml(exp.title)}</h3>
+                            </div>
+                            ${isOwner ? `
+                            <div class="flex items-center gap-1">
+                                <button onclick="editExp('${exp.id}')" title="Edit" class="p-2 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition cursor-pointer"><i class="fa-solid fa-pen-to-square text-sm"></i></button>
+                                <button onclick="deleteExp('${exp.id}')" title="Delete" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition cursor-pointer"><i class="fa-solid fa-trash text-sm"></i></button>
+                            </div>` : ''}
+                        </div>
+                        ${exp.description ? `<p class="text-xs text-slate-400 leading-relaxed">${escapeHtml(exp.description)}</p>` : ''}
+                    </div>
+                    
+                    <!-- Code Section -->
+                    <div class="bg-slate-950/90 border-t border-slate-800/80 relative">
+                        <div class="absolute right-3 top-3 z-10">
+                            <button onclick="copyCode(this, \`${btoa(encodeURIComponent(exp.code))}\`)" 
+                                class="flex items-center gap-1.5 bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-md border border-slate-700 cursor-pointer">
+                                <i class="fa-regular fa-copy"></i>
+                                <span class="copy-text">Copy</span>
+                            </button>
+                        </div>
+                        <div class="px-4 py-2 text-[10px] font-semibold tracking-wider text-slate-500 uppercase border-b border-slate-900">Source Code</div>
+                        <pre class="p-4 overflow-x-auto text-xs text-indigo-100 leading-relaxed max-h-60"><code>${escapeHtml(exp.code)}</code></pre>
+                    </div>
+
+                    <!-- Output Section (If present) -->
+                    ${exp.output ? `
+                    <div class="bg-slate-900/90 border-t border-slate-800/80">
+                        <div class="px-4 py-2 text-[10px] font-semibold tracking-wider text-emerald-400/80 uppercase border-b border-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-terminal text-xs"></i> Display Output / Result
+                        </div>
+                        <pre class="p-4 overflow-x-auto text-xs text-emerald-300 font-mono leading-relaxed max-h-48"><code>${escapeHtml(exp.output)}</code></pre>
+                    </div>` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.copyCode = function(btnElement, b64Code) {
+            const code = decodeURIComponent(atob(b64Code));
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Copied experiment code successfully!");
+                const span = btnElement.querySelector('.copy-text');
+                const icon = btnElement.querySelector('i');
+                span.innerText = "Copied!";
+                icon.className = "fa-solid fa-check text-emerald-400";
+                setTimeout(() => {
+                    span.innerText = "Copy";
+                    icon.className = "fa-regular fa-copy";
+                }, 2000);
+            } catch (err) {
+                showToast("Failed to copy.", true);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        window.openModal = function(id = null) {
+            if (!currentUser || currentUser.isAnonymous) {
+                showToast("Only the authorized admin can add experiments.", true);
+                return;
+            }
+            const modal = document.getElementById('expModal');
+            document.getElementById('expForm').reset();
+            document.getElementById('expId').value = '';
+
+            if (id) {
+                document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-indigo-400"></i> Edit Experiment`;
+                const item = experiments.find(e => e.id === id);
+                if (item) {
+                    document.getElementById('expId').value = item.id;
+                    document.getElementById('titleInput').value = item.title;
+                    document.getElementById('categoryInput').value = item.category;
+                    document.getElementById('descInput').value = item.description || '';
+                    document.getElementById('codeInput').value = item.code;
+                    document.getElementById('outputInput').value = item.output || '';
+                }
+            } else {
+                document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-flask-vial text-indigo-400"></i> Add New Experiment`;
+            }
+            modal.classList.remove('hidden');
+        }
+
+        window.closeModal = function() {
+            document.getElementById('expModal').classList.add('hidden');
+        }
+
+        window.handleFormSubmit = async function(event) {
+            event.preventDefault();
+            if (!currentUser || currentUser.isAnonymous) return;
+
+            const id = document.getElementById('expId').value || ('exp_' + Date.now());
+            const title = document.getElementById('titleInput').value.trim();
+            const category = document.getElementById('categoryInput').value;
+            const description = document.getElementById('descInput').value.trim();
+            const code = document.getElementById('codeInput').value;
+            const output = document.getElementById('outputInput').value;
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'experiments', id);
+                await setDoc(docRef, { title, category, description, code, output, updatedAt: Date.now() });
+                showToast("Experiment published to cloud!");
+                closeModal();
+            } catch (err) {
+                showToast("Error saving experiment: " + err.message, true);
+            }
+        }
+
+        window.editExp = function(id) {
+            openModal(id);
+        }
+
+        window.deleteExp = async function(id) {
+            if (!currentUser || currentUser.isAnonymous) return;
+            if (confirm("Delete this experiment from the public repository?")) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'experiments', id);
+                    await deleteDoc(docRef);
+                    showToast("Experiment deleted.");
+                } catch (err) {
+                    showToast("Failed to delete.", true);
+                }
+            }
+        }
+
+        window.filterByCategory = function(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-category') === cat) {
+                    btn.className = "cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-indigo-600 text-white transition cursor-pointer";
+                } else {
+                    btn.className = "cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer";
+                }
+            });
+            renderExperiments();
+        }
+
+        window.filterExperiments = function() {
+            renderExperiments();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.querySelector('div').className = isError 
+                ? "bg-rose-600 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-semibold border border-rose-500"
+                : "bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-semibold border border-emerald-500";
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-24', 'opacity-0'); }, 3000);
+        }
+    </script>
+</body>
+</html>
