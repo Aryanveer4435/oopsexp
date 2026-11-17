@@ -1,36 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExpVault - OOPs Experiments Repository</title>
+    <title>ExpVault — OOPs Experiments Repository</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f1f5f9; }
         code, pre { font-family: 'Fira Code', monospace; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .neumorphic-card {
+            background: #0f172a;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #090d16; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-cyan-500 to-blue-600 p-2 rounded-xl text-white shadow-lg shadow-cyan-500/20">
+    <!-- Header Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="bg-gradient-to-tr from-cyan-500 to-blue-600 p-2.5 rounded-2xl text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
                     <i class="fa-solid fa-code text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">ExpVault</h1>
-                    <p class="text-xs text-slate-400">Object-Oriented Programming Experiments</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">ExpVault 🐈</span>
+                        <span class="text-[10px] uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full font-semibold">Sigma Edition</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Object-Oriented Programming Laboratory Library</p>
                 </div>
-            </div>
+            </a>
 
             <div class="flex items-center space-x-4">
                 <!-- Search Bar -->
@@ -38,12 +47,12 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                         <i class="fa-solid fa-search text-sm"></i>
                     </span>
-                    <input type="text" id="searchInput" placeholder="Search experiments..." class="bg-slate-800 text-sm text-slate-200 pl-9 pr-4 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 w-64 transition-all">
+                    <input type="text" id="searchInput" placeholder="Search experiments..." class="bg-slate-900 text-sm text-slate-200 pl-9 pr-4 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-cyan-500 w-64 transition-all shadow-inner">
                 </div>
 
                 <!-- Admin Action Button -->
                 <div id="adminActionContainer">
-                    <button id="authBtn" onclick="toggleAuth()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-sm px-4 py-2 rounded-lg border border-slate-700 flex items-center space-x-2 transition-all">
+                    <button id="authBtn" onclick="toggleAuth()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white text-sm px-4 py-2.5 rounded-xl border border-slate-800 flex items-center space-x-2 transition-all shadow-md">
                         <i class="fa-solid fa-shield-halved text-cyan-400"></i>
                         <span id="authBtnText">Admin Sign In</span>
                     </button>
@@ -52,21 +61,52 @@
         </div>
     </header>
 
+    <!-- Hero Banner with Cat Mascot Vibe -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4 w-full">
+        <div class="neumorphic-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="space-y-3 z-10 max-w-2xl">
+                <div class="inline-flex items-center space-x-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-xs text-slate-300">
+                    <i class="fa-solid fa-terminal text-cyan-400"></i>
+                    <span>Fast, clean, one-click code copy and reference</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-100">
+                    Object-Oriented Programming <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Lab Manual</span>
+                </h2>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Explore curated OOP experiments complete with clean source codes and terminal output verifications. Anyone can view and copy instantly!
+                </p>
+            </div>
+
+            <!-- Fun Mascot Box -->
+            <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-4 flex items-center space-x-4 shadow-xl z-10 w-full md:w-auto">
+                <div class="w-12 h-12 bg-cyan-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center text-cyan-400 text-2xl flex-shrink-0">
+                    🐱
+                </div>
+                <div>
+                    <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400">Chief Debugger Says</div>
+                    <div class="text-xs font-medium text-slate-300 mt-0.5">"Le garreb, tu bhi kya aish karega! Copy kar aur nikal."</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content Area -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
         
         <!-- Controls & Category Filters -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div id="categoryFilters" class="flex flex-wrap gap-2">
-                <button onclick="filterCategory('All')" class="cat-btn active px-4 py-1.5 rounded-lg text-sm font-medium bg-cyan-500 text-white transition-all shadow-md shadow-cyan-500/20">All Experiments</button>
-                <button onclick="filterCategory('Java')" class="cat-btn px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">Java</button>
-                <button onclick="filterCategory('C++')" class="cat-btn px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">C++</button>
-                <button onclick="filterCategory('Python')" class="cat-btn px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">Python</button>
+                <button onclick="filterCategory('All')" class="cat-btn active px-4 py-2 rounded-xl text-sm font-medium bg-cyan-500 text-white transition-all shadow-lg shadow-cyan-500/20">All Experiments</button>
+                <button onclick="filterCategory('Java')" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">Java</button>
+                <button onclick="filterCategory('C++')" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">C++</button>
+                <button onclick="filterCategory('Python')" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all">Python</button>
             </div>
 
             <!-- Add New Experiment Button (Hidden for public visitors, unlocked for admin) -->
             <div id="addNewContainer" class="hidden">
-                <button onclick="openModal()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/20 flex items-center space-x-2 transition-all">
+                <button onclick="openModal()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center space-x-2 transition-all">
                     <i class="fa-solid fa-plus"></i>
                     <span>Add Experiment</span>
                 </button>
@@ -79,30 +119,30 @@
         </div>
 
         <!-- Empty State -->
-        <div id="emptyState" class="hidden text-center py-16">
-            <div class="text-slate-600 text-5xl mb-4"><i class="fa-solid fa-folder-open"></i></div>
+        <div id="emptyState" class="hidden text-center py-20">
+            <div class="text-slate-600 text-6xl mb-4">😿</div>
             <h3 class="text-lg font-medium text-slate-300">No experiments found</h3>
-            <p class="text-sm text-slate-500 mt-1">Try adjusting your search or category filter.</p>
+            <p class="text-sm text-slate-500 mt-1">Try adjusting your search query or category filter.</p>
         </div>
     </main>
 
     <!-- Add/Edit Modal (Admin Only) -->
-    <div id="expModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
-            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-                <h3 id="modalTitle" class="font-semibold text-slate-200">Add New OOP Experiment</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <div id="expModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="neumorphic-card rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-slate-800">
+            <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+                <h3 id="modalTitle" class="font-semibold text-slate-200 text-base">Add New OOP Experiment</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="expForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
                 <input type="hidden" id="expId">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Experiment Title</label>
-                        <input type="text" id="expTitle" required placeholder="e.g., Dynamic Method Dispatch" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">Experiment Title</label>
+                        <input type="text" id="expTitle" required placeholder="e.g., Dynamic Method Dispatch" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 shadow-inner">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Language / Category</label>
-                        <select id="expCategory" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">Language / Category</label>
+                        <select id="expCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 shadow-inner">
                             <option value="Java">Java</option>
                             <option value="C++">C++</option>
                             <option value="Python">Python</option>
@@ -110,28 +150,37 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Description / Objective</label>
-                    <textarea id="expDesc" rows="2" required placeholder="Brief explanation of the OOP concept demonstrated..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 custom-scrollbar"></textarea>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Description / Objective</label>
+                    <textarea id="expDesc" rows="2" required placeholder="Brief explanation of the OOP concept demonstrated..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 custom-scrollbar shadow-inner"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Source Code</label>
-                    <textarea id="expCode" rows="8" required placeholder="Paste your code here..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus:border-cyan-500 custom-scrollbar"></textarea>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Source Code</label>
+                    <textarea id="expCode" rows="8" required placeholder="Paste your code here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 font-mono focus:outline-none focus:border-cyan-500 custom-scrollbar shadow-inner"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Output / Execution Result</label>
-                    <textarea id="expOutput" rows="3" required placeholder="Paste terminal output..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus:border-cyan-500 custom-scrollbar"></textarea>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5">Output / Execution Result</label>
+                    <textarea id="expOutput" rows="3" required placeholder="Paste terminal output..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 font-mono focus:outline-none focus:border-cyan-500 custom-scrollbar shadow-inner"></textarea>
                 </div>
-                <div class="flex justify-end space-x-3 pt-2">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm text-slate-400 hover:text-white bg-slate-800">Cancel</button>
-                    <button type="submit" class="px-4 py-2 rounded-lg text-sm font-medium bg-cyan-500 hover:bg-cyan-400 text-white shadow-lg shadow-cyan-500/20">Save Experiment</button>
+                <div class="flex justify-end space-x-3 pt-3">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-sm text-slate-400 hover:text-white bg-slate-800 transition-colors">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 transition-all">Save Experiment</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="text-sm font-medium" id="toastMsg">Copied Successfully! 😼</div>
+    </div>
+
     <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        <p>ExpVault &copy; 2026 &bull; Secure OOPs Experiment Repository</p>
+    <footer class="border-t border-slate-900 bg-slate-950 py-8 text-center text-xs text-slate-500 mt-auto space-y-1">
+        <p>ExpVault &bull; Sigma Cat Neumorphic Edition 🐈</p>
+        <p class="text-slate-600">"Human detected. Intelligence not detected." — Billi</p>
     </footer>
 
     <!-- Firebase SDKs & App Logic -->
@@ -159,10 +208,8 @@
         let currentCategory = 'All';
         let isAdmin = false;
 
-        // Admin email check (Change this to your actual email if needed)
-        const ADMIN_EMAIL = "aryanveer7498767771@gmail.com";
+        const ADMIN_EMAIL = "aryanveer5344@gmail.com";
 
-        // Expose functions globally
         window.toggleAuth = async () => {
             if (isAdmin) {
                 await signOut(auth);
@@ -208,23 +255,34 @@
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
-                    btn.className = "cat-btn active px-4 py-1.5 rounded-lg text-sm font-medium bg-cyan-500 text-white transition-all shadow-md shadow-cyan-500/20";
+                    btn.className = "cat-btn active px-4 py-2 rounded-xl text-sm font-medium bg-cyan-500 text-white transition-all shadow-lg shadow-cyan-500/20";
                 } else {
-                    btn.className = "cat-btn px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all";
+                    btn.className = "cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 transition-all";
                 }
             });
             renderExperiments();
         };
 
         window.copyCode = (buttonElement) => {
-            const codeBox = buttonElement.closest('.bg-slate-900').querySelector('code');
+            const codeBox = buttonElement.closest('.neumorphic-card').querySelector('code');
             navigator.clipboard.writeText(codeBox.innerText);
+            
+            showToast("Copied Successfully! 😼");
             const originalHTML = buttonElement.innerHTML;
             buttonElement.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i><span class="text-emerald-400">Copied!</span>';
             setTimeout(() => {
                 buttonElement.innerHTML = originalHTML;
             }, 2000);
         };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
 
         window.deleteExperiment = async (id) => {
             if (!isAdmin) return;
@@ -266,13 +324,13 @@
                 }
                 closeModal();
                 fetchExperiments();
+                showToast("Experiment saved successfully! 🚀");
             } catch (error) {
                 console.error("Error saving:", error);
                 alert("Error saving experiment: " + error.message);
             }
         };
 
-        // Fetch experiments from Firestore
         async function fetchExperiments() {
             try {
                 const q = query(collection(db, "experiments"), orderBy("createdAt", "desc"));
@@ -305,9 +363,9 @@
             }
             emptyState.classList.add('hidden');
 
-            filtered.forEach(exp => {
+            filtered.forEach((exp, idx) => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800/80 rounded-2xl overflow-hidden flex flex-col shadow-xl";
+                card.className = "neumorphic-card rounded-2xl overflow-hidden flex flex-col transition-all hover:border-slate-700";
                 
                 const badgeColor = exp.category === 'Java' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
                                    exp.category === 'C++' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
@@ -316,39 +374,40 @@
                 if (isAdmin) {
                     adminButtonsHTML = `
                         <div class="flex items-center space-x-2">
-                            <button onclick="editExperiment('${exp.id}')" class="text-slate-400 hover:text-cyan-400 text-xs px-2 py-1 rounded bg-slate-800"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick="deleteExperiment('${exp.id}')" class="text-slate-400 hover:text-rose-400 text-xs px-2 py-1 rounded bg-slate-800"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="editExperiment('${exp.id}')" class="text-slate-400 hover:text-cyan-400 text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteExperiment('${exp.id}')" class="text-slate-400 hover:text-rose-400 text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     `;
                 }
 
                 card.innerHTML = `
-                    <div class="p-5 border-b border-slate-800/80 flex items-start justify-between gap-4">
+                    <div class="p-5 border-b border-slate-800/80 flex items-start justify-between gap-4 bg-slate-900/30">
                         <div>
                             <div class="flex items-center space-x-2 mb-2">
-                                <span class="text-xs px-2.5 py-0.5 rounded-full border font-medium ${badgeColor}">${exp.category}</span>
+                                <span class="text-xs px-2.5 py-0.5 rounded-full border font-semibold ${badgeColor}">${exp.category}</span>
+                                <span class="text-[11px] text-slate-500 font-mono">EXP-${String(experiments.length - idx).padStart(2, '0')}</span>
                             </div>
-                            <h3 class="font-semibold text-slate-100 text-base">${escapeHtml(exp.title)}</h3>
-                            <p class="text-xs text-slate-400 mt-1">${escapeHtml(exp.description)}</p>
+                            <h3 class="font-semibold text-slate-100 text-base tracking-tight">${escapeHtml(exp.title)}</h3>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">${escapeHtml(exp.description)}</p>
                         </div>
                         ${adminButtonsHTML}
                     </div>
-                    <div class="relative bg-slate-950 p-4 border-b border-slate-800/80 flex-grow">
+                    <div class="relative bg-slate-950 p-4 border-b border-slate-800/60 flex-grow">
                         <div class="absolute top-3 right-3 flex items-center space-x-2">
-                            <button onclick="copyCode(this)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center space-x-1.5 transition-all">
-                                <i class="fa-regular fa-copy"></i>
+                            <button onclick="copyCode(this)" class="bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded-xl border border-slate-800 flex items-center space-x-1.5 transition-all shadow-sm">
+                                <i class="fa-regular fa-copy text-cyan-400"></i>
                                 <span>Copy</span>
                             </button>
                         </div>
                         <pre class="overflow-x-auto custom-scrollbar pt-8 pb-2"><code class="text-xs text-slate-300 leading-relaxed">${escapeHtml(exp.code)}</code></pre>
                     </div>
                     ${exp.output ? `
-                    <div class="bg-slate-900/60 p-4 border-t border-slate-800/80">
-                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center space-x-1">
+                    <div class="bg-slate-900/40 p-4 border-t border-slate-800/60">
+                        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center space-x-1.5">
                             <i class="fa-solid fa-terminal text-cyan-400"></i>
-                            <span>Output Display</span>
+                            <span>Terminal Output Verification</span>
                         </div>
-                        <pre class="bg-slate-950/80 p-3 rounded-lg border border-slate-800/60 overflow-x-auto custom-scrollbar"><code class="text-xs text-emerald-400">${escapeHtml(exp.output)}</code></pre>
+                        <pre class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/60 overflow-x-auto custom-scrollbar shadow-inner"><code class="text-xs text-emerald-400">${escapeHtml(exp.output)}</code></pre>
                     </div>` : ''}
                 `;
                 grid.appendChild(card);
@@ -360,10 +419,8 @@
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // Search listener
         document.getElementById('searchInput').addEventListener('input', renderExperiments);
 
-        // Auth State Observer
         onAuthStateChanged(auth, (user) => {
             const authBtnText = document.getElementById('authBtnText');
             const authBtn = document.getElementById('authBtn');
@@ -372,7 +429,7 @@
             if (user && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                 isAdmin = true;
                 authBtnText.innerText = "Admin (Sign Out)";
-                authBtn.classList.add('border-cyan-500/50', 'text-cyan-400');
+                authBtn.classList.add('border-cyan-500/50', 'text-cyan-400', 'bg-cyan-500/10');
                 addNewContainer.classList.remove('hidden');
             } else {
                 if (user) {
@@ -381,13 +438,12 @@
                 }
                 isAdmin = false;
                 authBtnText.innerText = "Admin Sign In";
-                authBtn.classList.remove('border-cyan-500/50', 'text-cyan-400');
+                authBtn.classList.remove('border-cyan-500/50', 'text-cyan-400', 'bg-cyan-500/10');
                 addNewContainer.classList.add('hidden');
             }
             renderExperiments();
         });
 
-        // Initial Load
         fetchExperiments();
     </script>
 </body>
