@@ -20,7 +20,7 @@
             border: 1px solid rgba(167, 139, 250, 0.2);
         }
         
-        /* Neumorphic Inset Surface (for EXP badge, inputs, and code boxes) */
+        /* Neumorphic Inset Surface */
         .neumorphic-inset {
             background: #1e1b2e;
             box-shadow: inset 4px 4px 8px #12101b, inset -4px -4px 8px #2a2641;
@@ -48,7 +48,7 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-emerald-400 selection:text-slate-950">
 
-    <!-- Floating Pill Navbar (Inspired by your screenshot) -->
+    <!-- Floating Pill Navbar -->
     <header class="sticky top-4 z-40 max-w-5xl mx-auto w-full px-4">
         <div class="neumorphic-card rounded-3xl px-5 py-3.5 flex items-center justify-between gap-4">
             <a href="#" id="homeLogoBtn" class="flex items-center space-x-3.5 group">
@@ -206,7 +206,7 @@
         let experiments = [];
         let currentCategory = 'All';
         let isAdmin = false;
-        let openExpId = null; // Tracks which experiment tab is currently expanded
+        let openExpId = null;
 
         const ADMIN_EMAIL = "aryanveer5344@gmail.com";
 
@@ -428,7 +428,7 @@
             emptyState.classList.add('hidden');
 
             filtered.forEach((exp, idx) => {
-                const expNumber = String(idx + 1).padStart(2, '0');
+                const serialNumber = String(idx + 1).padStart(2, '0');
                 const isOpen = (openExpId === exp.id);
 
                 const card = document.createElement('div');
@@ -450,14 +450,13 @@
                 }
 
                 card.innerHTML = `
-                    <!-- Horizontal Clickable Tab Row (Matches Reference Screenshot) -->
+                    <!-- Horizontal Clickable Tab Row -->
                     <div data-id="${exp.id}" class="exp-tab-header p-5 sm:px-7 sm:py-6 flex items-center justify-between gap-4 cursor-pointer select-none group">
                         
                         <div class="flex items-center gap-4 sm:gap-6 min-w-0">
-                            <!-- Left Inset EXP Number Box -->
-                            <div class="neumorphic-inset w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex flex-col items-center justify-center flex-shrink-0">
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-purple-400">EXP</span>
-                                <span class="text-lg sm:text-xl font-extrabold text-emerald-400 leading-tight">${expNumber}</span>
+                            <!-- Left Inset Serial Number Box -->
+                            <div class="neumorphic-inset w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-xl sm:text-2xl font-extrabold text-emerald-400 leading-none">${serialNumber}</span>
                             </div>
 
                             <!-- Center Pills & Bold Program Title -->
