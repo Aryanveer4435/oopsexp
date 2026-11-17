@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExpVault — OOPs Experiments Repository</title>
+    <title>OOPs Manual — Experiments Repository</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts & FontAwesome -->
@@ -44,8 +44,7 @@
                 </div>
                 <div>
                     <div class="flex items-center space-x-2">
-                        <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">ExpVault 🐈</span>
-                        <span class="text-[10px] uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 px-2 py-0.5 rounded-full font-semibold">Neumorphic Edition</span>
+                        <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent">OOPs Manual 🐈</span>
                     </div>
                     <p class="text-xs text-purple-300/70">Object-Oriented Programming Laboratory Library</p>
                 </div>
@@ -167,7 +166,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-purple-900/40 bg-[#1e1b2e] py-8 text-center text-xs text-purple-400/60 mt-auto space-y-1">
-        <p>ExpVault &bull; Neumorphic Cyber Cat Edition 🐈</p>
+        <p>OOPs Manual &bull; Neumorphic Cyber Cat Edition 🐈</p>
     </footer>
 
     <!-- Firebase SDKs & App Logic -->
@@ -252,15 +251,43 @@
 
         window.copyCode = (buttonElement) => {
             const codeBox = buttonElement.closest('.neumorphic-card').querySelector('code');
-            navigator.clipboard.writeText(codeBox.innerText);
-            
+            const textToCopy = codeBox.innerText;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    handleCopySuccess(buttonElement);
+                }).catch(() => {
+                    fallbackCopyText(textToCopy, buttonElement);
+                });
+            } else {
+                fallbackCopyText(textToCopy, buttonElement);
+            }
+        };
+
+        function fallbackCopyText(text, buttonElement) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";  // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                handleCopySuccess(buttonElement);
+            } catch (err) {
+                alert("Failed to copy code.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function handleCopySuccess(buttonElement) {
             showToast("Copied Successfully! 😼");
             const originalHTML = buttonElement.innerHTML;
             buttonElement.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i><span class="text-emerald-400">Copied!</span>';
             setTimeout(() => {
                 buttonElement.innerHTML = originalHTML;
             }, 2000);
-        };
+        }
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
